@@ -26,32 +26,22 @@ var hints = [
 ];
 
 //10 tries set
-const maxTries = 10;
+var maxTries = 10;
 
 //variables
 var guessedLetters = [];
-var currentWord;
-
+var guessingWord = [];
 var remainingGuesses = 0;
-var gameStart = false;
-var gameEnd = false;
 var wins = 0;
 var loss = 0;
 
 //press any key to start the game
-function play () {
-    document.onkeyup = function(event) {
-        remainingGuesses = maxTries;
-//select a random word
-    var word = selectWord[Math.floor(Math.random()*(selectWord.length))];
-}
-    var guessingWord = [];
-        for (var i = 0; i < selectWord.length; i++); {
+
+document.onkeyup = function (event) {
+    var word = selectWord[Math.floor(Math.random()*selectWord.length)];
+    for (var i = 0; i < word.length; i++ ) {
         guessingWord[i] = "_";
-        document.getElementById("guessTheWord").innerText = "";
-        document.getElementById("numberLeft").innerText = remainingGuesses;
-        document.getElementById("numberWins").innerText = wins;
-        document.getElementById("numberLost").innerText = loss;
-}
-    var remainingLetters = selectWord.length;
-}
+        document.getElementById("guessTheWord").innerText = guessingWord.join(" ");
+    };
+};
+

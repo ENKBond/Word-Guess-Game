@@ -11,8 +11,16 @@
 </head>
 
 <body>
+    <div class="row">
+        <div class="col-md-6 gameplay-column">
+            <img id="win-image" src="assets/images/you-win.png" alt="Winning Image" />
+            <img id="lose-image" src="assets/images/gameover.png" alt="Losing Image" />
+            <h2 id="tryAgain">Press Any Key to Try Again!</h2>
+            <img id="tryAgainImage" src="" alt="" />
+        </div>
+        <div class="col-md-6 gameplay-column">
     <h1>Classic Lit Hangman</h1>
-    <p>Press any key to get started</p>
+    <p id="pressKey">Press any key to get started</p>
     <br>
     <h3>Current Word</h3>
     <br>
@@ -34,6 +42,11 @@
     <br>
     <h4 id = "numberWins"></h4>
     <br>
+    <h3>Losses</h3>
+    <br>
+    <h4 id = "numberLost"></h4>
+    </div>
+</div>
 </body>
 
 

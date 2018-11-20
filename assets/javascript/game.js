@@ -47,5 +47,7 @@ document.addEventListener('keypress', (event) => {
        
     }
 
+//remaining to do
+//continue to test and edit saving the guessed letter and pushing it to the correct array
 
 

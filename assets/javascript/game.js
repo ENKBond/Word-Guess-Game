@@ -1,89 +1,79 @@
-window.onload =  function () { 
+var wordList = ["twain", "orwell", "woolf", "steinbeck", "dostoyevsky", "hemingway", "alcott", "bronte", "dickens", "fitzgerald"];
+var selectedWord = "";
+var lettersInWord = [];
+var numBlanks = 0;
+var blanksAndSuccesses = [];
+var wrongGuesses = [];
 
-var guessedLetters = [];
-var remainingGuesses = 10;
-var wins = 0;
-var loss = 0;
-var word = ["orwell", "austen", "tolstoy", "twain", "woolf","dickens", "salinger","bronte", "steinbeck", "hemingway"];
-var lettersGuessed = [];
-var guessingWord = [];
-var chosenWord = "";
+var numberWins = 0;
+var numberLoss = 0;
+var numberLeft = 10;
 
-function gameStart() {
-    var randomWord = Math.floor(Math.random()* word.length);
-    var chosenWord = word[randomWord];
-    for (var i = 0; i < chosenWord.length; i++ ) {
-        guessingWord.push("_");
-        document.getElementById("guessTheWord").innerText = guessingWord.join(" ");
-        wordDisplayed = true
+function playGame() {
+    selectedWord = wordList[Math.floor(Math.random() * wordList.length)];
+    lettersInWord = selectedWord.split("");
+    numBlanks = lettersInWord.length;
+
+    numberLeft = 10;
+    wrongGuesses = [];
+    blanksAndSuccesses = [];
+
+    for(var i=0; i<numBlanks; i++) {
+        blanksAndSuccesses.push("_");
     }
-    
-    document.getElementById("numberLeft").innerText = remainingGuesses;
-    document.getElementById("numberWins").innerText = wins;
-    document.getElementById("numberLoss").innerText = loss;
-    document.getElementById("start").style.visibility = "hidden";
 
-    console.log(chosenWord);
-    console.log(guessingWord);
+    document.getElementById("guessTheWord").innerText = blanksAndSuccesses.join(" ");
+    document.getElementById("numberLeft").innerText = numberLeft;
+    document.getElementById("numberWins").innerText = numberWins;
+    document.getElementById("numberLoss").innerText = numberLoss;
+    document.getElementById("guessedLetters").innerText = wrongGuesses.join(" ");
 }
 
+function checkGuess(letter) {
+    var isLetterInWord = false;
+    
+    for (var i=0; i<numBlanks; i++) {
+        if (selectedWord[i]==letter) {
+            isLetterInWord = true;
+        }
+    }
 
-
-function checkGuess() {
-    document.onkeyup=function(event) {
-    var userGuess = event.keyCode;
-    var key = String.fromCharCode(userGuess);
-    if (chosenWord.indexOf(key) > -1) {
-        for (var i = 0; i < chosenWord.length; i++) {
-            if (choseWord[i] == key) {
-                guessingWord[i] = key;
-                wins++
-            } else if (chosenWord[i] != key) {
-                lettersGuessed.push(key);
-                remainingGuesses--;
-                document.getElementById("guessedLetters").innerText = lettersGuessed;
+    if (isLetterInWord) {
+        for (var i=0; i<numBlanks; i++) {
+            if (selectedWord[i]==letter) {
+                blanksAndSuccesses[i]=letter;
             }
         }
     }
-    console.log(userGuess);
-    
-};
+    else {
+        wrongGuesses.push(letter);
+        numberLeft--
+    }
 }
 
-document.onkeyup = function(e) {
-    gameStart();
-    checkGuess();
-};
+function roundComplete() {
+    document.getElementById("numberLeft").innerText = numberLeft;
+    document.getElementById("guessTheWord").innerText = blanksAndSuccesses.join(" ");
+    document.getElementById("guessedLetters").innerText = wrongGuesses.join(" ");
 
-};
+    if (lettersInWord.toString() == blanksAndSuccesses.toString()) {
+        numberWins++;
+        document.getElementById("numberWins").innerText = numberWins;
+        playGame();
+    }
+    else if (numberLeft == 0) {
+        numberLoss++;
+        document.getElementById("numberLoss").innerText = numberLoss;
+        playGame();
+    }
+}
 
 
 
+playGame();
 
-
-
-// document.addEventListener('keypress', (event) => {
-//     var userGuess = event.keyCode;
-//     var key = String.fromCharCode(userGuess);
-//     if (chosenWord.indexOf(key) > -1) {
-//         for (var i = 0; i < chosenWord.length; i++) {
-//             if (chosenWord[i] === key) {
-//                 guessingWord[i] = key;
-//                 wins++;
-//             }
-//         }
-//     };
-
-        // if (chosenWord[i] !== key) {
-        //     lettersGuessed[i] = key;
-        //     lettersGuessed.push(key);
-        //     remainingGuesses--;
-        //     document.getElementById("guessedLetters").innerText = lettersGuessed;
-        // }
-
-        // if (remainingGuesses <= 0){
-
-        // }
-        // }
-       
-    
+document.onkeyup = function(event) {
+    var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
+    checkGuess(letterGuessed);
+    roundComplete();
+}
